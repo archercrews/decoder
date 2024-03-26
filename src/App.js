@@ -6,23 +6,40 @@ let reader;
 
 function decode(content) {
   const lines = content.split("\n");
+  const key = new Map();
+  const numbers = lines.map(line => {
+    const split = line.split(" ");
+    key.set(split[0], split[1]);
+    return split[0];
+  });
+
+  console.log("Key: ", key);
   
   // rearrange contents to be ordered by number ascending
-  lines.sort();
+  // lines.sort();
+  numbers.sort((a, b) => a - b);
 
   // build new array of pyramid lines
   const pyramid = [];
-  for (let lineIndex = 0; lineIndex <= lines.length; lineIndex++) {
-    const splice = lineIndex === 0 ? lines.splice(0, 1) : lines.splice(0, lineIndex + 1);
+  for (let numberIndex = 0; numberIndex <= numbers.length; numberIndex++) {
+    const splice = numberIndex === 0 ? numbers.splice(0, 1) : numbers.splice(0, numberIndex + 1);
     pyramid.push(splice);
   }
 
   console.log(pyramid);
-  
+
+  const message = pyramid.map( line => {
+    debugger;
+    const value = key.get(line[line.length - 1]); 
+    console.log(key.get(line[line.length - 1]))
+    return key.get(line[line.length - 1]);
+  });
+
+  console.log("Message: ", message.toLocaleString().replace(/,/g, " "));
+  return message;
 }
 
 function readFile(file) {
-  console.log("hit")
   // console.log(event.srcElement.files[0])
   // const file = event.srcElement.files[0];
   const reader = new FileReader();
